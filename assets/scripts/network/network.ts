@@ -3,6 +3,7 @@ import { director, log } from 'cc';
 import pubsub from '../libs/pubsub';
 import request from './request';
 import response from './response';
+import time from '../utils/os';
 
 const network = {
     url: "",
@@ -10,6 +11,7 @@ const network = {
     password: "",
     token: "",
     sock: null,
+    rtt: -1,     // Round-Trip Time (ms)
 
     connecting: false,
     logged_in: false,
@@ -18,6 +20,11 @@ const network = {
     request: new Map<Number, Object>(),
 
     on_open() {
+
+        if (this.rtt == -1) {
+            this.sock.send(JSON.stringify({cmd: "ping", time: time.now()}));
+            return;
+        }
         if (this.logged_in == false) {
             // login
             this.sock.send(JSON.stringify({cmd: "login", id: this.id, password: this.password}));
@@ -29,6 +36,14 @@ const network = {
 
     on_message(event) {
         let data = JSON.parse(event.data);
+
+        if (this.rtt == -1) {
+            this.rtt = time.now() - data.time;
+            log("Round-Trip Time: " + this.rtt)
+            log("Start loging ...")
+            this.sock.send(JSON.stringify({cmd: "login", id: this.id, password: this.password, rtt: this.rtt}));
+            return;
+        }
 
         if (this.connecting) {
             this.connecting = false;

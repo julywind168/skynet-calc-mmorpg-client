@@ -1,4 +1,4 @@
-import { _decorator, Button, Component, EditBox, log, Node, sys } from 'cc';
+import { _decorator, Button, Component, director, EditBox, log, Node, sys } from 'cc';
 import { Subscriber } from '../classes/Subscriber';
 import network from '../network/network';
 import { AudioManager } from '../libs/AudioManager';
@@ -25,6 +25,7 @@ export class main extends Subscriber {
             if (r.ok) {
                 network.start_heartbeat();
                 log("登陆成功", r);
+                director.loadScene("game");
             } else {
                 alert("登陆失败: " + r.err);
             }
