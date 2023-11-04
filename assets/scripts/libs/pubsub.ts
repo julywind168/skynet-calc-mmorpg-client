@@ -13,7 +13,7 @@ const pubsub = {
     },
 
     pub (name: String, event: Object = null) {
-        console.log("PUB ===", name, event);
+        // console.log("PUB ===", name, event);
         
         let queue = this.event_queue(name);
         for (let i = 0; i < queue.length; i++) {

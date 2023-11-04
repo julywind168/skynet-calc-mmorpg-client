@@ -5,6 +5,18 @@ const global = {
             effect: 1
         }
     },
+    me: {
+        id: "MYID",
+        gold: 0,
+        scene: {
+            id: "main",
+            x: 0,
+            y: 0
+        }
+    },
+    scene: {
+        players: []
+    }
 
 
 };

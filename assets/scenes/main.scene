@@ -304,7 +304,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 640,
-      "y": 360.00000000000006,
+      "y": 350.00000000000006,
       "z": 0
     },
     "_lrot": {
@@ -389,7 +389,7 @@
     "_priority": 0,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 360,
+    "_orthoHeight": 357.58730158730157,
     "_near": 0,
     "_far": 1000,
     "_color": {
@@ -590,8 +590,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 143.3136749267578,
-      "height": 50.400000000000006
+      "width": 143.32395006613757,
+      "height": 50.4
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -623,7 +623,7 @@
     "_string": "KITE-MMORPG",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 29.333333333333332,
+    "_actualFontSize": 29.53125,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -899,7 +899,7 @@
     "_string": "ID",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 29.333333333333332,
+    "_actualFontSize": 29.53125,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1268,7 +1268,7 @@
     "_string": "密码",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 29.333333333333332,
+    "_actualFontSize": 29.53125,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1525,7 +1525,7 @@
     "_string": "登陆",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 29.333333333333332,
+    "_actualFontSize": 29.53125,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1741,7 +1741,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 1280,
-      "height": 720
+      "height": 700
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

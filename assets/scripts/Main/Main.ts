@@ -2,6 +2,8 @@ import { _decorator, Button, Component, director, EditBox, log, Node, sys } from
 import { Subscriber } from '../classes/Subscriber';
 import network from '../network/network';
 import { AudioManager } from '../libs/AudioManager';
+import global from '../global';
+import config from '../config';
 const { ccclass, property } = _decorator;
 
 @ccclass('main')
@@ -23,9 +25,19 @@ export class main extends Subscriber {
 
         this.sub("network_login_result", (r) => {
             if (r.ok) {
-                network.start_heartbeat();
+                // network.start_heartbeat();
                 log("登陆成功", r);
-                director.loadScene("game");
+
+                global.me = r.p;
+                network.token = r.token;
+
+                this.send_request(["scene_join", r.p.scene.id, network.rtt], (scene: any) => {
+                    global.scene = scene
+
+                    log("scene_join", scene);
+
+                    director.loadScene("game");
+                })
             } else {
                 alert("登陆失败: " + r.err);
             }
@@ -43,7 +55,7 @@ export class main extends Subscriber {
 
             if (this.input_id.string != "" && this.input_pswd.string != "") {
 
-                network.init("ws://127.0.0.1:8888", this.input_id.string, this.input_pswd.string);
+                network.init(config.server_url, this.input_id.string, this.input_pswd.string);
                 network.connect();
             }
         })
