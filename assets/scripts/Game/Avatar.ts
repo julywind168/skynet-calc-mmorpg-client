@@ -1,16 +1,13 @@
-import { _decorator, Component, EventKeyboard, Input, input, KeyCode, Label, Node, Vec3 } from 'cc';
+import { _decorator, Component, EventKeyboard, Input, input, KeyCode, Label, log, Node, Vec2, Vec3 } from 'cc';
 import global from '../global';
 import timer from '../libs/timer';
 import { Subscriber } from '../classes/Subscriber';
+import { Joystick } from '../classes/Joystick';
 import config from '../config';
+import pubsub from '../libs/pubsub';
+
 const { ccclass, property } = _decorator;
 
-enum Direction {
-    Up = 1,
-    Left,
-    Down,
-    Right
-}
 
 const SPEED = config.avatar_speed;
 
@@ -20,8 +17,8 @@ export class Avatar extends Subscriber {
     @property({ type: Label})
     private lab_id = null;
 
-    private speed = 0;
-    private direction = Direction.Up;
+    private direction = new Vec2(0, 0);
+    private joystick_changed = false;
 
     onLoad () {
         this.lab_id.string = global.me.id;
@@ -30,51 +27,6 @@ export class Avatar extends Subscriber {
             global.me.scene.y,
             0
         ));
-
-        input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-        input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
-    }
-
-    onDestroy () {
-        input.off(Input.EventType.KEY_DOWN, this.onKeyDown, this);
-        input.off(Input.EventType.KEY_UP, this.onKeyUp, this);
-    }
-
-    onKeyDown (event: EventKeyboard) {
-        switch (event.keyCode) {
-            case KeyCode.KEY_W:
-            case KeyCode.ARROW_UP:
-                this.direction = Direction.Up;
-                this.speed = SPEED;
-                this.upload_my_position();
-                break;
-            case KeyCode.KEY_A:
-            case KeyCode.ARROW_LEFT:
-                this.direction = Direction.Left;
-                this.speed = SPEED;
-                this.upload_my_position();
-                break;
-            case KeyCode.KEY_S:
-            case KeyCode.ARROW_DOWN:
-                this.direction = Direction.Down;
-                this.speed = SPEED;
-                this.upload_my_position();
-                break;
-            case KeyCode.KEY_D:
-            case KeyCode.ARROW_RIGHT:
-                this.direction = Direction.Right;
-                this.speed = SPEED;
-                this.upload_my_position();
-                break;
-        }
-    }
-
-    onKeyUp (event: EventKeyboard) {
-        if (this.speed != 0) {
-            this.speed = 0;
-            this.upload_my_position();
-        }
-        
     }
 
     my_position () {
@@ -82,42 +34,65 @@ export class Avatar extends Subscriber {
         return {
             x: pos.x,
             y: pos.y,
-            speed: this.speed,
-            direction: this.direction
+            speed: SPEED,
+            direction: {
+                x: this.direction.x,
+                y: this.direction.y
+            }
         }
     }
 
+    limit_upload(interval) {
+        let working = false;
+        let next_payload = null
+
+        let upload = (payload) => {
+            if (working == false) {
+                working = true;
+                this.send_request(payload);
+                timer.setTimeout(() => {
+                    working = false;
+                    if (next_payload) {
+                        upload(next_payload);
+                        next_payload = null;
+                    }
+                }, interval)
+            } else {
+                next_payload = payload;
+            }
+        }
+        return upload;
+    }
+
+    private position_uploader = this.limit_upload(300);
+
     upload_my_position() {
-        this.send_request(["scene_sync_my_position", global.me.scene.id, this.my_position()]);
+        this.position_uploader(["scene_sync_my_position", global.me.scene.id, this.my_position()]);
     }
 
     protected start(): void {
+        pubsub.sub("joystick_changed", () => {
+            this.joystick_changed = true;
+        })
+
         timer.setInterval(() => {
             this.upload_my_position();
         }, 1000)
     }
 
     protected update(dt: number): void {
-        if (this.speed > 0) {
-            let pos = this.node.position.clone();
+        this.direction = Joystick.ins.dir.normalize();
 
-            switch (this.direction) {
-                case Direction.Up:
-                    pos.y += this.speed*dt;
-                    break;
-                case Direction.Down:
-                    pos.y -= this.speed*dt;
-                    break;
-                case Direction.Left:
-                    pos.x -= this.speed*dt;
-                    break;
-                case Direction.Right:
-                    pos.x += this.speed*dt;
-                    break;
-                default:
-                    break;
-            }
+        if (this.direction.x != 0 || this.direction.y != 0) {
+            let pos = this.node.getPosition();
+            pos.x += this.direction.x * SPEED * dt;
+            pos.y += this.direction.y * SPEED * dt;
             this.node.setPosition(pos);
+        }
+
+        if (this.joystick_changed) {
+            this.joystick_changed = false;
+            this.upload_my_position();
         }
     }
 }

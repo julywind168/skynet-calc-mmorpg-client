@@ -39,24 +39,8 @@ export class GameMgr extends Subscriber {
     }
 
     guess (position: any, time: number) {
-        if (position.speed > 0) {
-            switch (position.direction) {
-                case Direction.Up:
-                    position.y += position.speed * time;
-                    break;
-                case Direction.Down:
-                    position.y -= position.speed * time;
-                    break;
-                case Direction.Left:
-                    position.x -= position.speed * time;
-                    break;
-                case Direction.Right:
-                    position.x += position.speed * time;
-                    break;
-                default:
-                    break;
-            }
-        }
+        position.x += position.direction.x * position.speed * time;
+        position.y += position.direction.y * position.speed * time;
         return position;
     }
 
@@ -72,7 +56,7 @@ export class GameMgr extends Subscriber {
 
         this.sub("server_scene_sync_position", (data) => {
             if (data.pid == global.me.id) {
-                let position = this.guess(data.position, network.rtt/2);
+                let position = this.guess(data.position, network.rtt/1000/2);
                 // todo
                 // 如果预测位置与我的位置相差太大, 则跳到该预测位置(服务器认可位置)
 
@@ -84,12 +68,17 @@ export class GameMgr extends Subscriber {
                     let time = 1.0;
                     let position = this.guess(data.position, time + network.rtt/1000/2);
 
-                    // 计算移动速度,如果低于 SPEED(200)，则用 200 速度计算出时间
+                    // 计算移动速度,如果低于 默认速度 SPEED(200)，则用 SPEED 速度计算出时间
                     let distance = this.calc_distance(position, p.position());
                     let speed = distance/time;
                     if (speed < config.avatar_speed) {
                         speed = config.avatar_speed;
                         time = distance/speed;
+                    }
+
+                    // 如果当前玩家是静止不动状态, 此时应该以极快的速度, 纠正位置
+                    if (position.direction.x == 0 && position.direction.y == 0 && time > 0.1) {
+                        time = 0.1;
                     }
                     p.moveto(new Vec3(position.x, position.y, 0), time);
                 }
