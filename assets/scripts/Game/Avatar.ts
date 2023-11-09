@@ -1,4 +1,4 @@
-import { _decorator, Component, EventKeyboard, Input, input, KeyCode, Label, log, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Label, Vec2, Vec3 } from 'cc';
 import global from '../global';
 import timer from '../libs/timer';
 import { Subscriber } from '../classes/Subscriber';
@@ -85,8 +85,15 @@ export class Avatar extends Subscriber {
 
         if (this.direction.x != 0 || this.direction.y != 0) {
             let pos = this.node.getPosition();
-            pos.x += this.direction.x * SPEED * dt;
-            pos.y += this.direction.y * SPEED * dt;
+            let posx = pos.x + this.direction.x * SPEED * dt;
+            let posy = pos.y + this.direction.y * SPEED * dt;
+
+            if (config.in_map_width(posx)) {
+                pos.x = posx;
+            }
+            if (config.in_map_height(posy)) {
+                pos.y = posy;
+            }
             this.node.setPosition(pos);
         }
 

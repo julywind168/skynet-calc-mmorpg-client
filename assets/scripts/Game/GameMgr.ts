@@ -25,8 +25,6 @@ export class GameMgr extends Subscriber {
 
 
     protected onLoad(): void {
-        log("GameMgr load....", global.scene.players.length);
-
         for (let index = 0; index < global.scene.players.length; index++) {
             const p = global.scene.players[index];
             if (p.id != global.me.id) {
@@ -41,7 +39,28 @@ export class GameMgr extends Subscriber {
     guess (position: any, time: number) {
         position.x += position.direction.x * position.speed * time;
         position.y += position.direction.y * position.speed * time;
+        this.fix_dest(position);
         return position;
+    }
+
+    // 不能超过地图
+    private fix_dest(dest: any) {
+        let min_x = -config.map_width/2 + config.avatar_half_body;
+        let max_x = config.map_width/2 - config.avatar_half_body;
+
+        let min_y = -config.map_height/2 + config.avatar_half_body + config.avatar_id_height;
+        let max_y = config.map_height/2 - config.avatar_half_body;
+
+        if (dest.x > max_x) {
+            dest.x = max_x;
+        } else if (dest.x < min_x) {
+            dest.x = min_x;
+        }
+        if (dest.y > max_y) {
+            dest.y = max_y;
+        } else if (dest.y < min_y) {
+            dest.x = min_y;
+        }
     }
 
     protected start(): void {
