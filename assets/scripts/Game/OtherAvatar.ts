@@ -38,5 +38,13 @@ export class OtherAvatar extends Component {
     public position() {
         return this.node.getPosition();
     }
+
+    /**
+     * exit
+     */
+    public exit() {
+        this.node.removeFromParent();
+        this.node.destroy();
+    }
 }
 

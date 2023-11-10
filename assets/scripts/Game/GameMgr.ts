@@ -73,6 +73,14 @@ export class GameMgr extends Subscriber {
             this.others[p.id] = obj.getComponent(OtherAvatar);
         })
 
+        this.sub("server_scene_player_leaved", (data) => {
+            let pid = data.pid;
+            let p = this.others[pid];
+            if (p) {
+                p.exit();
+            }
+        })
+
         this.sub("server_scene_sync_position", (data) => {
             if (data.pid == global.me.id) {
                 let position = this.guess(data.position, network.rtt/1000/2);
