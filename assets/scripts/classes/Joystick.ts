@@ -68,6 +68,7 @@ export class Joystick extends Component {
             }
             this.node_dot.setPosition(localPos);
         }
+        this.calculateAngle();
         pubsub.pub("joystick_changed");
     }
 

@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "156b55af-f528-4c5f-9dff-091204e58036",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "156b55af-f528-4c5f-9dff-091204e58036@6c48a",
+      "displayName": "fire_sword",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "156b55af-f528-4c5f-9dff-091204e58036",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "156b55af-f528-4c5f-9dff-091204e58036@f9941",
+      "displayName": "fire_sword",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": -4.5,
+        "offsetY": -17,
+        "trimX": 12,
+        "trimY": 116,
+        "width": 375,
+        "height": 1221,
+        "rawWidth": 408,
+        "rawHeight": 1419,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -187.5,
+            -610.5,
+            0,
+            187.5,
+            -610.5,
+            0,
+            -187.5,
+            610.5,
+            0,
+            187.5,
+            610.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            12,
+            1303,
+            387,
+            1303,
+            12,
+            82,
+            387,
+            82
+          ],
+          "nuv": [
+            0.029411764705882353,
+            0.057787174066243834,
+            0.9485294117647058,
+            0.057787174066243834,
+            0.029411764705882353,
+            0.9182522903453136,
+            0.9485294117647058,
+            0.9182522903453136
+          ],
+          "minPos": [
+            -187.5,
+            -610.5,
+            0
+          ],
+          "maxPos": [
+            187.5,
+            610.5,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "156b55af-f528-4c5f-9dff-091204e58036@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "sprite-frame",
+    "fixAlphaTransparencyArtifacts": true,
+    "redirect": "156b55af-f528-4c5f-9dff-091204e58036@f9941"
+  }
+}
