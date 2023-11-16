@@ -103,13 +103,13 @@ const network = {
         }
     },
 
-    send(payload: any) {
+    send(name: string, params: any) {
         if (this.logged_in && this.sock.readyState == this.sock.OPEN) {
             this.session++;
             this.request.set(this.session, {
-                "name": payload[0],
+                "name": name,
             })
-            this.sock.send(JSON.stringify({"session": this.session, payload: payload}))
+            this.sock.send(JSON.stringify({"session": this.session, name, params}))
         }
     },
 

@@ -20,13 +20,13 @@ export class Subscriber extends Component {
         this.unsub_list.push(unsub);
     }
 
-    send_request (payload: any, callback: Function = null) {
+    send_request (name: string, params: any = {}, callback: Function = null) {
         if (network.logged_in && network.sock.readyState == network.sock.OPEN) {
             if (callback) {
                 let event_name = "_network_response_" + (network.session + 1);
                 this.sub(event_name, callback);
             }
-            network.send(payload);
+            network.send(name, params);
         }
     }
 

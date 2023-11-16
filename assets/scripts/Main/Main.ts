@@ -31,7 +31,7 @@ export class main extends Subscriber {
                 global.me = r.p;
                 network.token = r.token;
 
-                this.send_request(["scene_join", r.p.scene.id, network.rtt], (scene: any) => {
+                this.send_request("scene_join", {pid: global.me.id, sid: r.p.scene.id, rtt: network.rtt}, (scene: any) => {
                     global.scene = scene
 
                     log("scene_join", scene);

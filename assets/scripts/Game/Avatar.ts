@@ -49,7 +49,7 @@ export class Avatar extends Subscriber {
         let upload = (payload) => {
             if (working == false) {
                 working = true;
-                this.send_request(payload);
+                this.send_request(payload.name, payload.params);
                 timer.setTimeout(() => {
                     working = false;
                     if (next_payload) {
@@ -67,7 +67,7 @@ export class Avatar extends Subscriber {
     private position_uploader = this.limit_upload(300);
 
     upload_my_position() {
-        this.position_uploader(["scene_sync_my_position", global.me.scene.id, this.my_position()]);
+        this.position_uploader({name: "scene_sync_my_position", params:{pid: global.me.id, sid: global.me.scene.id, position: this.my_position()}});
     }
 
     protected start(): void {
