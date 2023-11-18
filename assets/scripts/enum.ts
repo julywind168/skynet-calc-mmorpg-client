@@ -1,6 +1,6 @@
 
 export enum SwordType {
-    IceSword,
+    IceSword = 1,
     FireSword
 }
 

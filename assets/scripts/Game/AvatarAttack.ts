@@ -6,6 +6,9 @@ import { SwordType } from '../enum';
 import { Sword } from '../../prefabs/Swords/Sword';
 
 import { Joystick } from '../classes/Joystick';
+import { Subscriber } from '../classes/Subscriber';
+import { GameMgr } from './GameMgr';
+import global from '../global';
 
 const { ccclass, property } = _decorator;
 
@@ -14,7 +17,7 @@ const { ccclass, property } = _decorator;
 const ATTACK_CD = 500;
 
 @ccclass('AvatarAttack')
-export class AvatarAttack extends Component {
+export class AvatarAttack extends Subscriber {
 
     @property({ type: Node })
     private avatar: Node = null;
@@ -48,12 +51,30 @@ export class AvatarAttack extends Component {
                     this.attack_count += 1;
                 }
 
+                let angle = Joystick.ins.calculateAngle();
+
+                this.send_request("scene_sync_my_attack", {
+                    pid: global.me.id,
+                    sid: global.me.scene.id,
+                    angle,
+                    type
+                });
                 let obj: Node = instantiate(type == SwordType.IceSword && this.pfb_ice_sword || this.pfb_fire_sword)
                 this.node.addChild(obj);
-
-                obj.getComponent(Sword).fly(this.avatar.getPosition().clone(), Joystick.ins.calculateAngle(), type);
+                obj.getComponent(Sword).fly(this.avatar.getPosition().clone(), angle, type);
             }
         })
+
+        this.sub("server_scene_sync_attack", (e) => {
+            if (e.pid == global.me.id) return;
+
+            let position = GameMgr.ins.get_player_position(e.pid);
+            if (position) {
+                let obj: Node = instantiate(e.type == SwordType.IceSword && this.pfb_ice_sword || this.pfb_fire_sword)
+                this.node.addChild(obj);
+                obj.getComponent(Sword).fly(position, e.angle, e.type);
+            }
+        });
     }
 }
 

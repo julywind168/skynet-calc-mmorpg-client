@@ -8,21 +8,26 @@ import { Subscriber } from '../classes/Subscriber';
 import network from '../network/network';
 import config from '../config';
 
-enum Direction {
-    Up = 1,
-    Left,
-    Down,
-    Right
-}
 
 @ccclass('GameMgr')
 export class GameMgr extends Subscriber {
+
+    public static ins: GameMgr = null;
 
     @property({ type: Prefab})
     private pfb_other_avatar = null;
 
     others = {};
 
+    /**
+     * get_player_position
+     */
+    public get_player_position(pid: string) {
+        let p = this.others[pid];
+        if (p) {
+            return p.position().clone();
+        }
+    }
 
     protected onLoad(): void {
         for (let index = 0; index < global.scene.players.length; index++) {
@@ -34,6 +39,7 @@ export class GameMgr extends Subscriber {
                 this.others[p.id] = obj.getComponent(OtherAvatar);
             }
         }
+        GameMgr.ins = this;
     }
 
     guess (position: any, time: number) {
