@@ -1,10 +1,14 @@
-import { _decorator, Component, Label, log, tween, Vec3 } from 'cc';
+import { _decorator, Component, instantiate, Label, Node, Prefab, tween, Vec3 } from 'cc';
+import { Damage } from './Damage';
 const { ccclass, property } = _decorator;
 
 @ccclass('OtherAvatar')
 export class OtherAvatar extends Component {
     @property({ type: Label})
     private lab_id = null;
+
+    @property({ type: Prefab})
+    private pfb_damage = null;
 
     private t = null;
 
@@ -15,6 +19,15 @@ export class OtherAvatar extends Component {
         this.lab_id.string = id;
         this.node.setPosition(new Vec3(x, y, 0));
         this.node.active = true;
+    }
+
+    /**
+     * show_damage
+     */
+    public show_damage(value: number) {
+        let obj: Node = instantiate(this.pfb_damage);
+        this.node.addChild(obj);
+        obj.getComponent(Damage).init(value.toString(0));
     }
 
     /**

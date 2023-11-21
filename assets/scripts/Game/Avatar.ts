@@ -1,10 +1,11 @@
-import { _decorator, Label, Vec2, Vec3 } from 'cc';
+import { _decorator, instantiate, Label, Prefab, Vec2, Vec3, Node} from 'cc';
 import global from '../global';
 import timer from '../libs/timer';
 import { Subscriber } from '../classes/Subscriber';
 import { Joystick } from '../classes/Joystick';
 import config from '../config';
 import pubsub from '../libs/pubsub';
+import { Damage } from './Damage';
 
 const { ccclass, property } = _decorator;
 
@@ -17,6 +18,9 @@ export class Avatar extends Subscriber {
     @property({ type: Label})
     private lab_id = null;
 
+    @property({ type: Prefab})
+    private pfb_damage = null;
+
     private direction = new Vec2(0, 0);
     private joystick_changed = false;
 
@@ -27,6 +31,15 @@ export class Avatar extends Subscriber {
             global.me.scene.y,
             0
         ));
+    }
+
+    /**
+     * show_damage
+     */
+    public show_damage(value: number) {
+        let obj: Node = instantiate(this.pfb_damage);
+        this.node.addChild(obj);
+        obj.getComponent(Damage).init(value.toString(0));
     }
 
     my_position () {

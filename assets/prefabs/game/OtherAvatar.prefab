@@ -290,6 +290,10 @@
     "lab_id": {
       "__id__": 5
     },
+    "pfb_damage": {
+      "__uuid__": "beeeeb13-d5f6-4a85-adb3-ab02d562e4e6",
+      "__expectedType__": "cc.Prefab"
+    },
     "_id": ""
   },
   {
