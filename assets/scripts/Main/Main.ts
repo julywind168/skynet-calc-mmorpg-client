@@ -28,6 +28,9 @@ export class main extends Subscriber {
                 // network.start_heartbeat();
                 log("登陆成功", r);
 
+                sys.localStorage.setItem("account_pid", this.input_id.string);
+                sys.localStorage.setItem("account_pswd", this.input_pswd.string);
+
                 global.me = r.p;
                 network.token = r.token;
 
