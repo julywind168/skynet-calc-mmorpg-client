@@ -2,6 +2,7 @@ import { _decorator, Button, Component, Label, Node } from 'cc';
 import { Subscriber } from '../classes/Subscriber';
 import global from '../global';
 import timer from '../libs/timer';
+import { AudioManager } from '../libs/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('RestartPanel')
@@ -35,7 +36,7 @@ export class RestartPanel extends Subscriber {
     start() {
         this.btn_restart.on(Button.EventType.CLICK, () => {
 
-            // AudioManager.playSound("click");
+            AudioManager.playSound("click");
             this.send_request("scene_revive", {
                 sid: global.me.scene.id,
                 pid: global.me.id

@@ -74,6 +74,11 @@ export class GameMgr extends Subscriber {
     }
 
     protected start(): void {
+
+        this.sub("network_closed", () => {
+            alert("网络连接错误");
+        })
+
         this.sub("hit_other", (e) => {
             let p = this.others[e.id];
             if (p) {
