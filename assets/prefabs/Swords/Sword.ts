@@ -5,8 +5,8 @@ const { ccclass, property } = _decorator;
 import {SwordType} from "../../scripts/enum";
 
 
-const ICE_DISTANCE = 400;
-const FIRE_DISTANCE = 500;
+const ICE_DISTANCE = 300;
+const FIRE_DISTANCE = 400;
 
 const ICE_FLY_TIME = 0.8;
 const FIRE_FLY_TIME = 1;

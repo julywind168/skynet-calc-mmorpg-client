@@ -66,6 +66,18 @@ export class AvatarAttack extends Subscriber {
         })
 
         this.sub("server_scene_sync_attack", (e) => {
+
+            // 伤害飘字
+            let hit_players = e.hit_players;
+            hit_players.forEach(p => {
+                if (p.id == global.me.id) {
+                    this.pub("hit_me", p);
+                } else {
+                    this.pub("hit_other", p);
+                }
+            });
+
+            // 技能动画
             if (e.pid == global.me.id) return;
 
             let position = GameMgr.ins.get_player_position(e.pid);

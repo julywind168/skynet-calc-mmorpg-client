@@ -10,6 +10,7 @@ const global = {
         gold: 0,
         scene: {
             id: "main",
+            hp: 100,
             x: 0,
             y: 0
         }

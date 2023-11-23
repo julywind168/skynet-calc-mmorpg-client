@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Label, Node, Prefab, tween, Vec3 } from 'cc';
+import { _decorator, Color, Component, instantiate, Label, Node, Prefab, Sprite, tween, Vec3 } from 'cc';
 import { Damage } from './Damage';
 const { ccclass, property } = _decorator;
 
@@ -22,12 +22,30 @@ export class OtherAvatar extends Component {
     }
 
     /**
+     * revive
+     */
+    public revive() {
+        this.node.getComponent(Sprite).color = new Color(255, 255, 255, 255);
+    }
+
+    /**
+     * dead
+     */
+    public dead() {
+        this.node.getComponent(Sprite).color = new Color(255, 255, 255, 50);
+    }
+
+    /**
      * show_damage
      */
-    public show_damage(value: number) {
+    public show_damage(value: number, dead: boolean) {
         let obj: Node = instantiate(this.pfb_damage);
         this.node.addChild(obj);
-        obj.getComponent(Damage).init(value.toString(0));
+        obj.getComponent(Damage).init(value.toString());
+
+        if (dead) {
+            this.dead();
+        }
     }
 
     /**

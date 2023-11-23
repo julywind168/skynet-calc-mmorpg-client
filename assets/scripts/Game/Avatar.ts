@@ -4,7 +4,6 @@ import timer from '../libs/timer';
 import { Subscriber } from '../classes/Subscriber';
 import { Joystick } from '../classes/Joystick';
 import config from '../config';
-import pubsub from '../libs/pubsub';
 import { Damage } from './Damage';
 
 const { ccclass, property } = _decorator;
@@ -39,7 +38,7 @@ export class Avatar extends Subscriber {
     public show_damage(value: number) {
         let obj: Node = instantiate(this.pfb_damage);
         this.node.addChild(obj);
-        obj.getComponent(Damage).init(value.toString(0));
+        obj.getComponent(Damage).init(value.toString());
     }
 
     my_position () {
@@ -84,7 +83,16 @@ export class Avatar extends Subscriber {
     }
 
     protected start(): void {
-        pubsub.sub("joystick_changed", () => {
+        this.sub("hit_me", (e) => {
+            this.show_damage(e.damage);
+            global.me.scene.hp -= e.damage;
+            this.pub("my_hp_changed");
+            if (e.dead) {
+                this.pub("im_dead");
+            }
+        })
+
+        this.sub("joystick_changed", () => {
             this.joystick_changed = true;
         })
 

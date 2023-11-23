@@ -37,6 +37,10 @@ export class GameMgr extends Subscriber {
                 obj.getComponent(OtherAvatar).init(p.id, p.x, p.y);
                 this.node.addChild(obj);
                 this.others[p.id] = obj.getComponent(OtherAvatar);
+
+                if (p.hp == 0) {
+                    this.others[p.id].dead();
+                }
             }
         }
         GameMgr.ins = this;
@@ -70,6 +74,25 @@ export class GameMgr extends Subscriber {
     }
 
     protected start(): void {
+        this.sub("hit_other", (e) => {
+            let p = this.others[e.id];
+            if (p) {
+                p.show_damage(e.damage, e.dead);
+            }
+        })
+
+        this.sub("server_scene_player_revived", (data) => {
+            if (data.pid == global.me.id) {
+                global.me.scene.hp = 100;
+                this.pub("im_revived");
+                this.pub("my_hp_changed");
+            } else {
+                let p = this.others[data.pid];
+                if (p) {
+                    p.revive();
+                }
+            }
+        })
 
         this.sub("server_scene_player_joined", (data) => {
             let p = data.p;
@@ -77,6 +100,9 @@ export class GameMgr extends Subscriber {
             obj.getComponent(OtherAvatar).init(p.id, p.x, p.y);
             this.node.addChild(obj);
             this.others[p.id] = obj.getComponent(OtherAvatar);
+            if (p.hp == 0) {
+                this.others[p.id].dead();
+            }
         })
 
         this.sub("server_scene_player_leaved", (data) => {
