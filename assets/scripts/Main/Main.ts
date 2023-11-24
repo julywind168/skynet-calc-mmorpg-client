@@ -54,10 +54,9 @@ export class main extends Subscriber {
     protected start(): void {
         this.btn_login.node.on(Button.EventType.CLICK, () => {
             AudioManager.playSound("click");
-            log(this.input_id.string, this.input_pswd.string);
 
             if (this.input_id.string != "" && this.input_pswd.string != "") {
-
+                this.pub("show_popup", {name: "loading"});
                 network.init(config.server_url, this.input_id.string, this.input_pswd.string);
                 network.connect();
             }

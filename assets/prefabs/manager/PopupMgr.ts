@@ -12,14 +12,14 @@ export class PopupMgr extends Subscriber {
     private pfb_tooltips = null;
 
     @property({ type: Prefab})
-    private pfb_setting = null;
+    private pfb_loading = null;
 
 
     // 弹框 相同的只能显示一个，不同的可以都显示
     single_popup = {};
 
     onLoad() {
-        this.single_popup["setting"] = {prefab: this.pfb_setting, instance: null};
+        this.single_popup["loading"] = {prefab: this.pfb_loading, instance: null};
     }
 
     start () {
