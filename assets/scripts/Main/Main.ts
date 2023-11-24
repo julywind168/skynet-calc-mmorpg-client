@@ -17,6 +17,12 @@ export class main extends Subscriber {
     @property({ type: Button })
     private btn_login = null;
 
+    @property({ type: Button })
+    private btn_readme = null;
+
+    @property({ type: Node })
+    private node_readme = null;
+
     protected onLoad(): void {
         let pid = sys.localStorage.getItem("account_pid");
         let pswd = sys.localStorage.getItem("account_pswd");
@@ -60,6 +66,10 @@ export class main extends Subscriber {
                 network.init(config.server_url, this.input_id.string, this.input_pswd.string);
                 network.connect();
             }
+        })
+        this.btn_readme.node.on(Button.EventType.CLICK, () => {
+            AudioManager.playSound("click");
+            this.node_readme.active = true;
         })
     }
 }

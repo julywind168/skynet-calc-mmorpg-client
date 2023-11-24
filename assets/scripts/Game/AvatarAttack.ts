@@ -14,7 +14,7 @@ const { ccclass, property } = _decorator;
 
 
 // ms
-const ATTACK_CD = 300;
+const ATTACK_CD = 200;
 
 @ccclass('AvatarAttack')
 export class AvatarAttack extends Subscriber {
